@@ -3,81 +3,86 @@ public class TriggerDispatcherTest {
     
     @isTest
     static void testInsert() {
+        TriggerDispatcher.handlerExecutionMap = new Map<String, List<String>>();
+        TriggerDispatcher.handlerExecutionMap.put('Account', new List<String>{ 'TriggerDispatcherTest.TestAccountHandler' });
         Test.startTest();
+        TriggerDispatcher.triggerObjectOverride = 'Account';
         TriggerDispatcher.triggerContextOverride = System.TriggerOperation.BEFORE_INSERT;
-        TriggerDispatcher.run(new TestTriggerHandler(), 'Account');
+        TriggerDispatcher.run();
         TriggerDispatcher.triggerContextOverride = System.TriggerOperation.AFTER_INSERT;
-        TriggerDispatcher.run(new TestTriggerHandler(), 'Account');
+        TriggerDispatcher.run();
         Test.stopTest();
 
         System.assertEquals(2, TriggerDispatcher.executedTriggerContexts.size());
-        System.assert(TriggerDispatcher.executedTriggerContexts.contains('AccountBEFORE_INSERT'));
-        System.assert(TriggerDispatcher.executedTriggerContexts.contains('AccountAFTER_INSERT'));
+        System.assert(TriggerDispatcher.executedTriggerContexts.contains('TriggerDispatcherTest.TestAccountHandlerBEFORE_INSERT'));
+        System.assert(TriggerDispatcher.executedTriggerContexts.contains('TriggerDispatcherTest.TestAccountHandlerAFTER_INSERT'));
     }
     
     @isTest
     static void testUpdate() {
+        TriggerDispatcher.handlerExecutionMap = new Map<String, List<String>>();
+        TriggerDispatcher.handlerExecutionMap.put('Account', new List<String>{ 'TriggerDispatcherTest.TestAccountHandler' });
         Test.startTest();
+        TriggerDispatcher.triggerObjectOverride = 'Account';
         TriggerDispatcher.triggerContextOverride = System.TriggerOperation.BEFORE_UPDATE;
-        TriggerDispatcher.run(new TestTriggerHandler(), 'Account');
+        TriggerDispatcher.run();
         TriggerDispatcher.triggerContextOverride = System.TriggerOperation.AFTER_UPDATE;
-        TriggerDispatcher.run(new TestTriggerHandler(), 'Account');
+        TriggerDispatcher.run();
         Test.stopTest();
 
         System.assertEquals(2, TriggerDispatcher.executedTriggerContexts.size());
-        System.assert(TriggerDispatcher.executedTriggerContexts.contains('AccountBEFORE_UPDATE'));
-        System.assert(TriggerDispatcher.executedTriggerContexts.contains('AccountAFTER_UPDATE'));
+        System.assert(TriggerDispatcher.executedTriggerContexts.contains('TriggerDispatcherTest.TestAccountHandlerBEFORE_UPDATE'));
+        System.assert(TriggerDispatcher.executedTriggerContexts.contains('TriggerDispatcherTest.TestAccountHandlerAFTER_UPDATE'));
     }
     
     @isTest
     static void testDeleteUndelete() {
+        TriggerDispatcher.handlerExecutionMap = new Map<String, List<String>>();
+        TriggerDispatcher.handlerExecutionMap.put('Account', new List<String>{ 'TriggerDispatcherTest.TestAccountHandler' });
         Test.startTest();
+        TriggerDispatcher.triggerObjectOverride = 'Account';
         TriggerDispatcher.triggerContextOverride = System.TriggerOperation.BEFORE_DELETE;
-        TriggerDispatcher.run(new TestTriggerHandler(), 'Account');
+        TriggerDispatcher.run();
         TriggerDispatcher.triggerContextOverride = System.TriggerOperation.AFTER_DELETE;
-        TriggerDispatcher.run(new TestTriggerHandler(), 'Account');
+        TriggerDispatcher.run();
         TriggerDispatcher.triggerContextOverride = System.TriggerOperation.AFTER_UNDELETE;
-        TriggerDispatcher.run(new TestTriggerHandler(), 'Account');
+        TriggerDispatcher.run();
         Test.stopTest();
 
         System.assertEquals(3, TriggerDispatcher.executedTriggerContexts.size());
-        System.assert(TriggerDispatcher.executedTriggerContexts.contains('AccountBEFORE_DELETE'));
-        System.assert(TriggerDispatcher.executedTriggerContexts.contains('AccountAFTER_DELETE'));
-        System.assert(TriggerDispatcher.executedTriggerContexts.contains('AccountAFTER_UNDELETE'));
+        System.assert(TriggerDispatcher.executedTriggerContexts.contains('TriggerDispatcherTest.TestAccountHandlerBEFORE_DELETE'));
+        System.assert(TriggerDispatcher.executedTriggerContexts.contains('TriggerDispatcherTest.TestAccountHandlerAFTER_DELETE'));
+        System.assert(TriggerDispatcher.executedTriggerContexts.contains('TriggerDispatcherTest.TestAccountHandlerAFTER_UNDELETE'));
     }
     
     @isTest
     static void testRecursion() {
+        TriggerDispatcher.handlerExecutionMap = new Map<String, List<String>>();
+        TriggerDispatcher.handlerExecutionMap.put('Account', new List<String>{ 'TriggerDispatcherTest.TestAccountHandler' });
         Test.startTest();
+        TriggerDispatcher.triggerObjectOverride = 'Account';
         TriggerDispatcher.triggerContextOverride = System.TriggerOperation.BEFORE_UPDATE;
-        TriggerDispatcher.run(new TestTriggerHandler(), 'Account');
-        TriggerDispatcher.run(new TestTriggerHandler(), 'Account');
+        TriggerDispatcher.run();
+        TriggerDispatcher.run();
         Test.stopTest();
 
         System.assertEquals(1, TriggerDispatcher.executedTriggerContexts.size());
-        System.assert(TriggerDispatcher.executedTriggerContexts.contains('AccountBEFORE_UPDATE'));
+        System.assert(TriggerDispatcher.executedTriggerContexts.contains('TriggerDispatcherTest.TestAccountHandlerBEFORE_UPDATE'));
     }
     
     @isTest
-    static void testIsDisabled() {
+    static void testGetTriggerHandlerExecutionMdt() {
         Test.startTest();
+        TriggerDispatcher.triggerObjectOverride = 'Account';
         TriggerDispatcher.triggerContextOverride = System.TriggerOperation.BEFORE_UPDATE;
-        TestTriggerHandler testHandler = new TestTriggerHandler();
-        testHandler.isDisabled = true;
-        TriggerDispatcher.run(testHandler, 'Account');
+        TriggerDispatcher.run();
         Test.stopTest();
         
         System.assertEquals(0, TriggerDispatcher.executedTriggerContexts.size());
     }
 
-    class TestTriggerHandler implements ITriggerHandler {
+    public class TestAccountHandler implements ITriggerHandler {
         
-        @testVisible
-        Boolean isDisabled = false;
-        public Boolean isDisabled() { 
-            return this.isDisabled; 
-        }
-
         public void beforeInsert(List<SObject> newItemList) {}
         public void beforeUpdate(Map<Id, SObject> newItemMap, Map<Id, SObject> oldItemMap) {}
         public void beforeDelete(Map<Id, SObject> oldItemMap) {}

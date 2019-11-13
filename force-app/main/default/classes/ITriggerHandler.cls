@@ -1,6 +1,5 @@
 public interface ITriggerHandler {
-    Boolean isDisabled();
-
+    
     void beforeInsert(List<SObject> newItemList);
     void beforeUpdate(Map<Id, SObject> newItemMap, Map<Id, SObject> oldItemMap);
     void beforeDelete(Map<Id, SObject> oldItemMap);
