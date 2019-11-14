@@ -1,26 +1,40 @@
 public class TriggerDispatcher {
 
+    // Private, only able to be set via test class
     @testVisible
-    static String triggerObjectOverride;
+    private static String triggerObjectOverride;
     @testVisible
-    static System.TriggerOperation triggerContextOverride;
+    private static System.TriggerOperation triggerContextOverride;
 
+    // This is test visible because without metadata, you cannot execute as normal so in a unit test without any real triggers you must mock it
+    // This allows deployment of this framework without any actual handlers
     @testVisible
-    static Map<String, List<String>> handlerExecutionMap;
+    private static Map<String, List<String>> handlerExecutionMap;
     public static Set<String> executedTriggerContexts = new Set<String>();
 
+    /**
+    * run
+    * Retrieves all metadata, once-bulkified, and stores in a static map
+    * Dynamically determines which object is the trigger context
+    * Switch on trigger context
+    * Prevents recursion using a key of "handler class name" + "trigger context"
+    */
     public static void run() {
 
         String triggerObject = getTriggerObject();
         System.TriggerOperation triggerContext = getTriggerContext();
 
+        // String list of all handler names from the custom metadata
         List<String> handlerClassNames = getHandlers(triggerObject);
         if(handlerClassNames == null) {
             return;
         }
 
         for(String handlerClassName : handlerClassNames) {
+            // Unique name combining the handler class name and trigger context
+            // eg. AccountHandlerBEFORE_UPDATE
             String triggerExecutionName = handlerClassName + triggerContext;
+            // Dynamically get the handler class from the configured metadata
             ITriggerHandler handler = (ITriggerHandler)Type.forName(handlerClassName).newInstance();
         
             switch on triggerContext {
@@ -63,14 +77,30 @@ public class TriggerDispatcher {
         }
     }
 
+    /**
+    * getTriggerObject
+    * Gets the override trigger object enum or the real Trigger object
+    */
     static String getTriggerObject() {
         return triggerObjectOverride == null ? (Trigger.new == null ? Trigger.old[0].getSObjectType().getDescribe().getName() : Trigger.new[0].getSObjectType().getDescribe().getName()) : triggerObjectOverride;
     }
 
+    /**
+    * getTriggerContext
+    * Gets the override trigger context enum or the real Trigger.operationType enum
+    */
     static System.TriggerOperation getTriggerContext() {
         return triggerContextOverride == null ? Trigger.operationType : triggerContextOverride;
     }
 
+    /**
+    * isFirstExecution
+    * Check if handler has executed this context already
+    * If it has run return false
+    * If it has not run, add it to the set to prevent future executions and return true
+    * @param String triggerExecutionName unique concat string key of the handler class name and trigger context
+    * @return Boolean if the handler and context has executed already
+    */
     static Boolean isFirstExecution(String triggerExecutionName) {
         if(executedTriggerContexts.contains(triggerExecutionName)) {
             return false;
@@ -81,8 +111,8 @@ public class TriggerDispatcher {
 
     /**
     * getHandlers
-    * @param String of SObject API Name 
-    * @return List<String> of Apex Classes of Type ITriggerHandler to run
+    * @param String triggerObject an SObject API Name 
+    * @return a List<String> of Apex Class names to create Types for and run the handlers
     */
     static List<String> getHandlers(String triggerObject) {
         if(handlerExecutionMap == null) {
@@ -91,6 +121,11 @@ public class TriggerDispatcher {
         return handlerExecutionMap.get(triggerObject);
     }
 
+    /**
+    * getTriggerHandlerExecutionMdt
+    * Initialize the static map
+    * Retrieve all metadata at once and create the map to be used in all trigger execution for a single transaction
+    */
     static void getTriggerHandlerExecutionMdt() {
         handlerExecutionMap = new Map<String, List<String>>();
 

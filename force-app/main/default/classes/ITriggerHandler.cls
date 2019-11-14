@@ -14,13 +14,11 @@ public interface ITriggerHandler {
 
         // Object trigger
         trigger [SObjectName] on [SObjectName] (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
-            TriggerDispatcher.run(new [SObjectName]TriggerHandler());
+            TriggerDispatcher.run();
         }
 
         // TriggerHandler class
         public class [SObjectName]TriggerHandler implements ITriggerHandler {
-            public Boolean isDisabled() {return false;}
-
             public void beforeInsert(List<SObject> newItemList) {}
             public void beforeUpdate(Map<Id, SObject> newItemMap, Map<Id, SObject> oldItemMap) {}
             public void beforeDelete(Map<Id, SObject> oldItemMap) {}
