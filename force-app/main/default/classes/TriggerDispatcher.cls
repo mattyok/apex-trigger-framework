@@ -95,11 +95,11 @@ public class TriggerDispatcher {
 
     /**
     * isFirstExecution
-    * Check if handler has executed this context already
-    * If it has run return false
-    * If it has not run, add it to the set to prevent future executions and return true
+    * Check if this is the first execution of the handler
+    * If it has run previously return false
+    * If it has not run previously, add it to the set to prevent future executions and return true
     * @param String triggerExecutionName unique concat string key of the handler class name and trigger context
-    * @return Boolean if the handler and context has executed already
+    * @return Boolean if this is the first execution of a handler in a given context
     */
     static Boolean isFirstExecution(String triggerExecutionName) {
         if(executedTriggerContexts.contains(triggerExecutionName)) {
