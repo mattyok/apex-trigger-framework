@@ -36,42 +36,32 @@ public class TriggerDispatcher {
             String triggerExecutionName = handlerClassName + triggerContext;
             // Dynamically get the handler class from the configured metadata
             ITriggerHandler handler = (ITriggerHandler)Type.forName(handlerClassName).newInstance();
-        
+            // Continue to next handler class if not the first execution to prevent recursion
+            if(!isFirstExecution(triggerExecutionName)) {
+                continue;
+            }
+
             switch on triggerContext {
                 when BEFORE_INSERT {
-                    if(isFirstExecution(triggerExecutionName)) {
-                        handler.beforeInsert(Trigger.new);
-                    }
+                    handler.beforeInsert(Trigger.new);
                 }
                 when BEFORE_UPDATE {
-                    if(isFirstExecution(triggerExecutionName)) {
-                        handler.beforeUpdate(Trigger.newMap, Trigger.oldMap);
-                    }
+                    handler.beforeUpdate(Trigger.newMap, Trigger.oldMap);
                 }
                 when BEFORE_DELETE {
-                    if(isFirstExecution(triggerExecutionName)) {
-                        handler.beforeDelete(Trigger.oldMap);
-                    }
+                    handler.beforeDelete(Trigger.oldMap);
                 }
                 when AFTER_INSERT {
-                    if(isFirstExecution(triggerExecutionName)) {
-                        handler.afterInsert(Trigger.new);
-                    }
+                    handler.afterInsert(Trigger.new);
                 }
                 when AFTER_UPDATE {
-                    if(isFirstExecution(triggerExecutionName)) {
-                        handler.afterUpdate(Trigger.newMap, Trigger.oldMap);
-                    }
+                    handler.afterUpdate(Trigger.newMap, Trigger.oldMap);
                 }
                 when AFTER_DELETE {
-                    if(isFirstExecution(triggerExecutionName)) {
-                        handler.afterDelete(Trigger.oldMap);
-                    }
+                    handler.afterDelete(Trigger.oldMap);
                 }
                 when AFTER_UNDELETE {
-                    if(isFirstExecution(triggerExecutionName)) {
-                        handler.afterUndelete(Trigger.newMap);
-                    }
+                    handler.afterUndelete(Trigger.newMap);
                 }
             }
         }
