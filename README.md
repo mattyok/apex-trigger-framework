@@ -1,9 +1,7 @@
 # apex-trigger-framework
 Lightweight trigger framework with recursion check, multiple handlers and configurable disabling.
 
-<a href="https://githubsfdeploy.herokuapp.com/?owner=mattyok&repo=apex-trigger-framework&ref=framework-only" target="_blank">
-    <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
-</a>
+[![Deploy](https://deploy-to-sfdx.com/dist/assets/images/DeployToSFDX.svg)](https://deploy-to-sfdx.com/)
 
 ### Packaging
 Supports packaging development model. Uses custom metadata to configure which trigger handlers to run. By configuring it through the interface, you can create multiple handlers for a single object/trigger which can be used in the packaging development model. This lets you set the order in which each package should fire their trigger. 
