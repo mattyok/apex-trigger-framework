@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+  <types>
+    <name>ApexClass</name>
+    <members>ITriggerHandler</members>
+    <members>TriggerDispatcher</members>
+    <members>TriggerDispatcherTest</members>
+  </types>
+  <types>
+    <name>CustomField</name>
+    <members>Trigger_Handler_Execution__mdt.Execution_Order__c</members>
+    <members>Trigger_Handler_Execution__mdt.Handler_Class_Name__c</members>
+    <members>Trigger_Handler_Execution__mdt.Is_Disabled__c</members>
+    <members>Trigger_Handler_Execution__mdt.SObject_Name__c</members>
+  </types>
+  <types>
+    <name>CustomObject</name>
+    <members>Trigger_Handler_Execution__mdt</members>
+  </types>
+  <version>47.0</version>
+</Package>
