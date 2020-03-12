@@ -35,7 +35,7 @@ public class TriggerDispatcher {
             // eg. AccountHandlerBEFORE_UPDATE
             String triggerExecutionName = handlerClassName + triggerContext;
             // Dynamically get the handler class from the configured metadata
-            ITriggerHandler handler = (ITriggerHandler)Type.forName(handlerClassName).newInstance();
+            TriggerHandler handler = (TriggerHandler)Type.forName(handlerClassName).newInstance();
             // Continue to next handler class if not the first execution to prevent recursion
             if(!isFirstExecution(triggerExecutionName)) {
                 continue;
