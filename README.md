@@ -26,11 +26,11 @@ Deploy framework classes: `ITriggerHandler.cls`, `TriggerDispatcher.cls`, `Trigg
 
 Sales Handler
 
-![Sales Handler](https://github.com/mattyok/apex-trigger-framework/blob/master/images/saleshandler.PNG)
+![Sales Handler](https://github.com/mattyok/apex-trigger-framework/blob/master/images/saleshandler2.PNG)
 
 Marketing Handler
 
-![Marketing Handler](https://github.com/mattyok/apex-trigger-framework/blob/master/images/mkthandler.PNG)
+![Marketing Handler](https://github.com/mattyok/apex-trigger-framework/blob/master/images/mkthandler2.PNG)
 
 #### Add metadata to define handler execution
 
