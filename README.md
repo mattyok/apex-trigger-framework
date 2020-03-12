@@ -16,7 +16,7 @@ eg. TriggerDispatcher.executedTriggerContexts.remove('AccountTriggerHandlerBEFOR
 ```
 
 ### Example on Account
-Deploy framework classes: `ITriggerHandler.cls`, `TriggerDispatcher.cls`, `TriggerDispatcherTest.cls`
+Deploy framework classes: `TriggerHandler.cls`, `TriggerDispatcher.cls`, `TriggerDispatcherTest.cls`
 
 #### Create a trigger
 
